@@ -1,6 +1,6 @@
 # C++ Boilerplate
-[![Build Status](https://travis-ci.org/dpiet/cpp-boilerplate.svg?branch=master)](https://travis-ci.org/dpiet/cpp-boilerplate)
-[![Coverage Status](https://coveralls.io/repos/github/dpiet/cpp-boilerplate/badge.svg?branch=master)](https://coveralls.io/github/dpiet/cpp-boilerplate?branch=master)
+[![Build Status](https://travis-ci.org/rajesh1996/ARoBot-MPC-Controller-Interface.svg?branch=master)](https://travis-ci.org/rajesh1996/ARoBot-MPC-Controller-Interface)
+[![Coverage Status](https://coveralls.io/repos/github/rajesh1996/ARoBot-MPC-Controller-Interface/badge.svg?branch=master)](https://coveralls.io/github/rajesh1996/ARoBot-MPC-Controller-Interface?branch=master)
 ---
 
 ## Overview
