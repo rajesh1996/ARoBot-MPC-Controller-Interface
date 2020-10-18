@@ -27,3 +27,6 @@ make
 Run tests: ./test/cpp-test
 Run program: ./app/shell-app
 ```
+
+## License
+This software has been lincesed under [BSD 3-Clause](https://github.com/rajesh1996/ARoBot-MPC-Controller-Interface/blob/master/LICENSE.md)
