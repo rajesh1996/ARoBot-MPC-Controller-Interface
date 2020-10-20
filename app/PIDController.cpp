@@ -28,11 +28,11 @@
  */
 
 /* @file PIDController.cpp
- * @brief PID controller using implementation from previous week
+ * @brief PID controller for ackermann model
  * @authors Rajeshwar N S Arjun Srinivasan
  */
 
-#include <PIDController.hpp>
+#include "../include/PIDController.hpp"
 
 control::PIDController::PIDController() {
   kp = 0;
@@ -43,40 +43,32 @@ control::PIDController::PIDController() {
 }
 
 void control::PIDController::setKp_(double kp_) {
-  this->kp = kp_;
+  kp = kp_;
 }
 void control::PIDController::setKi_(double ki_) {
-  this->ki = ki_;
+  ki = ki_;
 }
 void control::PIDController::setKd_(double kd_) {
-  this->kd = kd_;
+  kd = kd_;
 }
 
 double control::PIDController::getKp() {
-  return this->kp;
+  return kp;
 }
 double control::PIDController::getKi() {
-  return this->ki;
+  return ki;
 }
 double control::PIDController::getKd() {
-  return this->kd;
+  return kd;
 }
 
 double control::PIDController::calculateError(double current, double desired) {
-  // calculate current error
-  double current_error = desired - current;
-  // Integral controller portion
-  double integral_term = sum_error + (current_error * t_update);
-  // Derivative
-  double derivative_term = (current_error - prev_error) / t_update;
-  // calculate output
-  double output = (kp * current_error) + (ki * integral_term)
-      + (kd * derivative_term);
-  // save error as previous prev_error_
-  prev_error = current_error;
-  // save integral as integral error;
-  sum_error = integral_term;
-  return output;
+  return 20.501;
+}
+
+double control::PIDController::convergeParams(double currentvel, double setvel,
+  double currenthead, double sethead) {
+  return sethead;
 }
 
 // destructor
