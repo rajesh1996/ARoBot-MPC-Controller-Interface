@@ -26,37 +26,20 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-/* @file test.cpp
- * @brief PID test
- * @authors Rajeshwar N S Arjun Srinivasan
- */
 #include <gtest/gtest.h>
 
 #include <iostream>
 
-#include "../include/PIDController.hpp"
+#include "../include/Ackermann.hpp"
 
-control::PIDController controller;
+Ackermann ack;
 
-TEST(PIDTest, TEST_GET_SET_PID) {
-  double kp = 0.5;
-  double ki = 0.1;
-  double kd = 0.2;
 
-  controller.setKp_(kp);
-  controller.setKi_(ki);
-  controller.setKd_(kd);
-
-  EXPECT_DOUBLE_EQ(kp, controller.getKp());
-  EXPECT_DOUBLE_EQ(ki, controller.getKi());
-  EXPECT_DOUBLE_EQ(kd, controller.getKd());
+TEST(AckermannTest, TEST_STEERING) {
+EXPECT_LT(ack.updateSteer(40), 45);
 }
 
-TEST(PIDCalculateTest, TEST_CALCULATE_ERROR) {
-EXPECT_DOUBLE_EQ(20.501, controller.calculateError(0.0, 1.0));
-}
 
-TEST(PIDConvergeTest, TEST_CALCULATE_ERROR) {
-EXPECT_NEAR(45, controller.convergeParams(0, 1.0, 0, 45), 0.1);
+TEST(AckermannTest, TEST_HEAD) {
+EXPECT_GT(ack.updateHead(1, 1, 45, 0), 0);
 }
