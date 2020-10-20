@@ -26,17 +26,20 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include <gtest/gtest.h>
 
-/* @file main.cpp
- * @brief Main function to get demo an
- * @authors Rajeshwar N S Arjun Srinivasad working of PID controller implementation
- */
 #include <iostream>
 
-#include "../include/PIDController.hpp"
 #include "../include/Ackermann.hpp"
 
+Ackermann ack;
 
-int main() {
-    return 0;
+
+TEST(AckermannTest, TEST_STEERING) {
+EXPECT_LT(ack.updateSteer(40), 45);
+}
+
+
+TEST(AckermannTest, TEST_HEAD) {
+EXPECT_GT(ack.updateHead(1, 1, 45, 0), 0);
 }

@@ -27,16 +27,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* @file main.cpp
- * @brief Main function to get demo an
- * @authors Rajeshwar N S Arjun Srinivasad working of PID controller implementation
+/* @file Ackermann.cpp
+ * @brief Ackerman vehichle model
+ * @authors Rajeshwar N S Arjun Srinivasan
  */
-#include <iostream>
+#include<iostream>
+ #include "../include/Ackermann.hpp"
 
-#include "../include/PIDController.hpp"
-#include "../include/Ackermann.hpp"
-
-
-int main() {
-    return 0;
+Ackermann::Ackermann() {
 }
+
+double Ackermann::updateSteer(double steer) {
+  return 30;
+}
+
+double Ackermann::updateHead(double time, double velocity,
+double steer , double currHead) {
+return 1;
+}
+
+Ackermann::~Ackermann() {}
+

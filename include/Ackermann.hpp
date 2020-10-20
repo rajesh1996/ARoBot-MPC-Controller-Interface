@@ -27,16 +27,47 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* @file main.cpp
- * @brief Main function to get demo an
- * @authors Rajeshwar N S Arjun Srinivasad working of PID controller implementation
+/*
+ * @file Ackermann.hpp
+ * @brief Class declaration for a PID controller
+ *
+ * @author Rajeshwar N S
+ * @author Arjun Srinivasan
  */
+#ifndef INCLUDE_ACKERMANN_HPP_
+#define INCLUDE_ACKERMANN_HPP_
 #include <iostream>
 
-#include "../include/PIDController.hpp"
-#include "../include/Ackermann.hpp"
+class Ackermann {
+ private :
 
+    double left_steer = 0;/*!< leftwheel steering angle*/
+    double right_steer = 0;/*!< rightwheel steering angle*/
+    double wheel_radius = 0;/*!< wheel radius*/
+    double robot_head = 0;/*!< robot current heading*/
+    double robot_length = 0;/*!< robot current heading*/
+    double targethead = 0;/*!< robot target heading*/
 
-int main() {
-    return 0;
-}
+ public :
+
+    Ackermann();
+    ~Ackermann();
+    /**
+    *  @brief Function to update induvidual steer angles given vehicle steering angle
+    *  @param vehicle steering angle double
+    *  @return max of left/right steer angle double
+    */
+    double updateSteer(double);
+    /**
+    *  @brief Function to update  heading of vehicle
+    *  @param step time double
+    *  @param step velocity double
+    *  @param step steerangle double
+    *  @param current heading double
+    *  @return double updated of head angle
+    */
+    double updateHead(double time, double velocity, \
+        double steer , double currHead);
+};
+
+#endif  // INCLUDE_ACKERMANN_HPP_

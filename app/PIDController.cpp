@@ -27,16 +27,50 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* @file main.cpp
- * @brief Main function to get demo an
- * @authors Rajeshwar N S Arjun Srinivasad working of PID controller implementation
+/* @file PIDController.cpp
+ * @brief PID controller for ackermann model
+ * @authors Rajeshwar N S Arjun Srinivasan
  */
-#include <iostream>
 
 #include "../include/PIDController.hpp"
-#include "../include/Ackermann.hpp"
 
+control::PIDController::PIDController() {
+  kp = 0;
+  ki = 0;
+  kd = 0;
+  prev_error = 0;
+  sum_error = 0;
+}
 
-int main() {
-    return 0;
+void control::PIDController::setKp_(double kp_) {
+  kp = kp_;
+}
+void control::PIDController::setKi_(double ki_) {
+  ki = ki_;
+}
+void control::PIDController::setKd_(double kd_) {
+  kd = kd_;
+}
+
+double control::PIDController::getKp() {
+  return kp;
+}
+double control::PIDController::getKi() {
+  return ki;
+}
+double control::PIDController::getKd() {
+  return kd;
+}
+
+double control::PIDController::calculateError(double current, double desired) {
+  return 20.501;
+}
+
+double control::PIDController::convergeParams(double currentvel, double setvel,
+  double currenthead, double sethead) {
+  return sethead;
+}
+
+// destructor
+control::PIDController::~PIDController() {
 }
