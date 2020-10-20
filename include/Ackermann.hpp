@@ -34,20 +34,19 @@
  * @author Rajeshwar N S
  * @author Arjun Srinivasan
  */
-#ifndef INCLUDE_ACKERMANN_HPP
-#define INCLUDE_ACKERMANN_HPP
+#ifndef INCLUDE_ACKERMANN_HPP_
+#define INCLUDE_ACKERMANN_HPP_
 #include <iostream>
-#include "PIDController.hpp"
 
 class Ackermann {
  private :
 
-    double left_steer;/*!< leftwheel steering angle*/
-    double right_steer;/*!< rightwheel steering angle*/
-    double wheel_radius;/*!< wheel radius*/
-    double robot_head;/*!< robot current heading*/
-    double robot_length;/*!< robot current heading*/
-    double targethead;/*!< robot target heading*/
+    double left_steer = 0;/*!< leftwheel steering angle*/
+    double right_steer = 0;/*!< rightwheel steering angle*/
+    double wheel_radius = 0;/*!< wheel radius*/
+    double robot_head = 0;/*!< robot current heading*/
+    double robot_length = 0;/*!< robot current heading*/
+    double targethead = 0;/*!< robot target heading*/
 
  public :
 
@@ -64,9 +63,11 @@ class Ackermann {
     *  @param step time double
     *  @param step velocity double
     *  @param step steerangle double
-    *  @return max of head angle
+    *  @param current heading double
+    *  @return double updated of head angle
     */
-    double updateHead(double, double, double);
+    double updateHead(double time, double velocity, \
+        double steer , double currHead);
 };
 
-#endif  // INCLUDE_ACKERMANN_HPP
+#endif  // INCLUDE_ACKERMANN_HPP_

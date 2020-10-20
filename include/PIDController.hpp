@@ -35,8 +35,8 @@
  * @author Arjun Srinivasan
  */
 
-#ifndef INCLUDE_PIDCONTROLLER_HPP
-#define INCLUDE_PIDCONTROLLER_HPP
+#ifndef INCLUDE_PIDCONTROLLER_HPP_
+#define INCLUDE_PIDCONTROLLER_HPP_
 
 #include<iostream>
 #include<vector>
@@ -51,19 +51,19 @@
 namespace control {
 class PIDController {
  private:
-  double max_velocity;/*!< Max vehicle velocity*/
-  double max_accel;/*!< Max vehicle acceleration*/
-  double ang_vel;/*!< Max vehicle angular velocity*/
-  double ang_accel;/*!< Max vehicle ngular acceleration*/
-  double kp; /*!< Proportional coefficient*/
-  double ki; /*!< Integral coefficient*/
-  double kd; /*!< Derivative coefficient*/
-  double error;/*!< keep track of current error*/
-  double prev_error;/*!< keep track of previous error*/
+  double max_velocity = 0;/*!< Max vehicle velocity*/
+  double max_accel = 0;/*!< Max vehicle acceleration*/
+  double ang_vel = 0;/*!< Max vehicle angular velocity*/
+  double ang_accel = 0;/*!< Max vehicle ngular acceleration*/
+  double kp = 0; /*!< Proportional coefficient*/
+  double ki = 0; /*!< Integral coefficient*/
+  double kd = 0; /*!< Derivative coefficient*/
+  double error = 0;/*!< keep track of current error*/
+  double prev_error = 0;/*!< keep track of previous error*/
   double sum_error = 0;/*!< keep track of cumulative error*/
   double t_update = 0.01;/*!< step time interval*/
   std::vector<std::pair<double, double>>\
- velpoints;/*!< stores velocity wrt time*/
+velpoints;/*!< stores velocity wrt time*/
   std::vector<std::pair<double, double>> headpoints;/*!< stores head wrt time*/
 
  public:
@@ -147,25 +147,22 @@ class PIDController {
   double calculateError(double current, double setpoint);
 
   /**
-   *  @brief Function to calculate new velocity in m/s with a PID
-   *  Algorithm using kp, ki & kd
-   *  @param double targetHeading, Target heading of the robot
-   *  @param double currentVelocity, current velocity of robot
-   *  @param double setPoint, Target Velocity
-   *  @param int flag, to enable while
-   *  @return double newVelocity
+   *  @brief Function to converge  current value and set point velocity/heading
+   *  @param double  Target heading of the robot
+   *  @param double currentvel is current velocity of robot
+   *  @param double setPoint is the desired velocity
+   *  @return double convergedheading
    */
-  double convergeParams(double current, double setpoint);
+  double convergeParams(double currentvel, double setvel, \
+    double currenthead, double sethead);
 
   /**
    *  @brief Function to use GNUplot for velocity convergence graph
-   *  @param std::vector<std::pair<double, double>>velpoints vector
    *  @return none
    */
   double plotVelocity();
   /**
    *  @brief Function to use GNUplot for Heading convergence graph
-   *  @param std::vector<std::pair<double, double>> headpoints vector
    *  @return none
    */
   double plotHeading();
@@ -175,6 +172,6 @@ class PIDController {
    */
   ~PIDController();
 };
-}
+}  // namespace control
 
-#endif  // INCLUDE_PIDCONTROLLER_HPP
+#endif  // INCLUDE_PIDCONTROLLER_HPP_
