@@ -1,0 +1,10 @@
+rajesh@rajesh-Lenovo-Legion-Y740-15IRHg:~/Desktop/submit/cpp-boilerplate$ cpplint $( find . -name \*.hpp -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/" -e "^./data" )
+Done processing ./app/Ackermann.cpp
+Done processing ./app/PIDController.cpp
+Done processing ./app/main.cpp
+Done processing ./include/Ackermann.hpp
+Done processing ./include/PIDController.hpp
+Done processing ./test/ackermann_test.cpp
+Done processing ./test/main.cpp
+Done processing ./test/test.cpp
+
