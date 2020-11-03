@@ -65,6 +65,9 @@ class PIDController {
   std::vector<std::pair<double, double>>\
 velpoints;/*!< stores velocity wrt time*/
   std::vector<std::pair<double, double>> headpoints;/*!< stores head wrt time*/
+  double f = 100.0;/*!< controller frequency*/
+  double current_error =100;/*!< current error*/
+
 
  public:
   /**
@@ -165,7 +168,17 @@ velpoints;/*!< stores velocity wrt time*/
    *  @brief Function to use GNUplot for Heading convergence graph
    *  @return none
    */
+
+  // void start();
+  // void stop(bool block = false);
+
+
+  // void controlLoop();
+
+
   double plotHeading();
+
+
 
   /**
    * @brief Destructor of Class PIDController

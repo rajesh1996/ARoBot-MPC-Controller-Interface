@@ -34,13 +34,42 @@
 
 #include "../include/PIDController.hpp"
 
+#include<thread>
+
+#include<chrono>
+
+using namespace std::chrono_literals;
+using std::chrono::steady_clock;
+using std::chrono::duration;
+
 control::PIDController::PIDController() {
-  kp = 0;
-  ki = 0;
-  kd = 0;
+  kp = 0.5;
+  ki = 0.1;
+  kd = 0.1;
   prev_error = 0;
   sum_error = 0;
+  f = 10;
+  current_error = 10000;
 }
+
+
+
+// void control::PIDController::start() {
+//   // rejoin any existing thread
+//   stop(true);
+
+//   // spin off a thread processing our control loop
+//   std::thread([this](){this->controlLoop();});
+// }
+
+
+// void control::PIDController::stop(bool block) {
+//   // set cancel; optionally wait for the thread to return
+//   cancel_ = true;
+//   if (block && control_loop_handle_.joinable())
+//     control_loop_handle_.join();
+//   cancel_ = false;
+// }
 
 void control::PIDController::setKp_(double kp_) {
   kp = kp_;
@@ -62,14 +91,47 @@ double control::PIDController::getKd() {
   return kd;
 }
 
-double control::PIDController::calculateError(double current, double desired) {
-  return 20.501;
+double control::PIDController::calculateError(double desired_vel, double actual_vel) {
+    current_error = desired_vel - actual_vel;
+    double feedback;
+
+
+    sum_error = sum_error + current_error;
+     feedback = kp * current_error + kd * (current_error - prev_error)
+      + ki * (sum_error);
+    prev_error = current_error;
+  
+
+  return feedback;
 }
 
 double control::PIDController::convergeParams(double currentvel, double setvel,
   double currenthead, double sethead) {
+  // initialize timing variables
+
+  std::chrono::milliseconds duration(static_cast<int>(1000/f));
+  auto next_loop_time = steady_clock::now();
+int i=1;
+  // execute loop at the desired frequency
+  while (abs(current_error)>0.1) {
+    // update next target time
+
+    next_loop_time += duration;
+
+      double fb = calculateError(currentvel, setvel);
+      currentvel +=fb;
+       std::cout << "step count is " << i <<std::endl;
+      i++;
+
+
+    // sleep until next loop
+    std::this_thread::sleep_until(next_loop_time);
+  }
+
+
   return sethead;
 }
+
 
 // destructor
 control::PIDController::~PIDController() {
