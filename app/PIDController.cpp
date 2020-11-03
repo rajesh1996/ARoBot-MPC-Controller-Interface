@@ -36,6 +36,7 @@
 
 #include "../include/Ackermann.hpp"
 #include <cmath>
+#include "gnuplot-iostream.h"
 
 
 #include<thread>
@@ -47,7 +48,7 @@ using std::chrono::steady_clock;
 using std::chrono::duration;
 
 control::PIDController::PIDController() {
-  kp = 0.4;
+  kp = 0.5;
   ki = 0.05;
   kd = 0.001;
   prev_error = 0;
@@ -113,7 +114,6 @@ double control::PIDController::calculateheadError(double desired_head, double ac
   return feedback;
 }
 
-
 double control::PIDController::convergeParams(double actvel, double setvel,
   double acthead, double sethead) {
   // initialize timing variables
@@ -143,7 +143,10 @@ currenthead = acthead;
 
               std::cout << "curr head is " << currenthead <<std::endl;
               std::cout << "set head is " << sethead <<std::endl;
-  while(abs(currenthead-sethead)<0.1) {
+                            std::cout << "sabsis " << fabs(currenthead-sethead) <<std::endl;
+
+        
+  while(abs(currenthead-sethead)>0.1) {
 
              // std::cout << "inside lop " <<std::endl;
 
@@ -154,11 +157,9 @@ currenthead = acthead;
         std::cout << "currentvel is " << currentvel <<std::endl;
         std::cout << "step count is " << i <<std::endl;
         i++;
-             if(abs(currentvel-setvel)<0.01) {
+             if(abs(currentvel-setvel)>0.2) {
                 fbv = calculateError(setvel,currentvel);
-                  // std::cout << "fbv is " << fbv <<std::endl;
-
-
+                  // std::cout << "fbv is " << fbv <<std::endl
                 currentvel +=fbv;
 
               }
@@ -167,11 +168,8 @@ currenthead = acthead;
                std::this_thread::sleep_until(next_loop_time);
             //   std::cout << "head is " << currenthead <<std::endl;
             // std::cout << "vel is " << currentvel <<std::endl;
-          
+   
         }
-            
-
-
 
             return currenthead;
 }
