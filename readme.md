@@ -1,6 +1,6 @@
 ## ARoBot - A PID controller Interface module for Ackerman Steering based Autonmous Robots
 [![Build Status](https://travis-ci.org/rajesh1996/ARoBot-PID-Controller-Interface.svg?branch=master)](https://travis-ci.org/rajesh1996/ARoBot-PID-Controller-Interface)
-[![Coverage Status](https://coveralls.io/repos/github/rajesh1996/ARoBot-MPC-Controller-Interface/badge.svg?branch=master)](https://coveralls.io/github/rajesh1996/ARoBot-MPC-Controller-Interface?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/rajesh1996/ARoBot-PID-Controller-Interface/badge.svg?branch=master)](https://coveralls.io/github/rajesh1996/ARoBot-PID-Controller-Interface?branch=master)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 ---
 
@@ -9,7 +9,7 @@
 * Arjun Srinivasan Ambalam - Sprint 1 (Navigator) Sprint 2 (Driver)
 
 ## Overview
-A controller interface for an Ackerman Kinematic model which continiuosly predicts the steering angle and wheel velocities
+A controller interface for an Ackerman Kinematic model which continiuosly predicts the steering angle and wheel velocities for a four wheeled robot which is navigating through an area. The controller implemeted is a PID controller which ensures the velocites and the heading are set to some target values which helps the robot steer properly in its environment. The controller calculates the error usinf propertional, derivative and integral gains and calculate the arc length and the angles given by the Ackerman geomtery model.A graph is plotted in the end indicating the convergence.
 
 ## Agile Iterative Process Log sheet
 
@@ -50,6 +50,7 @@ make
 make code_coverage
 ```
 This generates a index.html page in the build/coverage sub-directory that can be viewed locally in a web browser.
+
 
 ## Run cppcheck
 
