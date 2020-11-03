@@ -39,7 +39,7 @@
 
 int main() {
 control::PIDController acker;
-acker.convergeParams(0, 1.0, 0, 10);
+acker.convergeParams(0, 1.0, 0, 1);
 
     return 0;
 }

@@ -122,9 +122,9 @@ currenthead = acthead;
 
 
       currentvel +=fbv;
-      double fbh = kp*(sethead-acthead*(M_PI/180));
+      double fbh = kp*(sethead-acthead);
             std::cout << "head error init  is " << fbh <<std::endl;
-      prev_headerror = sethead - (acthead*(M_PI/180));
+      prev_headerror = sethead -acthead;
 
       ack_steer +=fbh;
 
