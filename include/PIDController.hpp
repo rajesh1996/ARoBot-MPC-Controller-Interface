@@ -66,13 +66,14 @@ class PIDController {
   double t_update = 0.01;/*!< step time interval*/
   std::vector<std::pair<double, double>>\
 velpoints;/*!< stores velocity wrt time*/
+
   std::vector<std::pair<double, double>> headpoints;/*!< stores head wrt time*/
   double f = 100.0;/*!< controller frequency*/
-  double current_error =100;/*!< current error*/
+  double current_error = 100;/*!< current error*/
   double current_headerror = 100;
 
   // double  currentvel = 0;
-   double currenthead = 0;
+  double currenthead = 0;
   double ack_steer = 0;
 
  public:

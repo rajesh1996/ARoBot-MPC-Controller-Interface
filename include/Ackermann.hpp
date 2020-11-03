@@ -49,7 +49,7 @@ class Ackermann {
     double robot_length = 8;/*!< robot current heading*/
     double targethead = 0;/*!< robot target heading*/
         double robot_width = 4;
-            double max_steer = 40 ;
+double max_steer = 40;
 
 
 

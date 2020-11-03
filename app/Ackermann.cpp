@@ -35,31 +35,19 @@
 #include <cmath>
  #include "../include/Ackermann.hpp"
 Ackermann::Ackermann() {
-    double left_steer = 0;/*!< leftwheel steering angle*/
-    double right_steer = 0;/*!< rightwheel steering angle*/
-    double steer = 10;
-    double wheel_radius = 0;/*!< wheel radius*/
-    double robot_head = 0;/*!< robot current heading*/
-    double robot_length = 8;/*!< robot current heading*/
-    double targethead = 0;/*!< robot target heading*/
-    double robot_width = 4;
-    double max_steer = 40 ;
-
-
+left_steer = 0;/*!< leftwheel steering angle*/
+right_steer = 0;/*!< rightwheel steering angle*/
+steer = 10;
+    wheel_radius = 0;/*!< wheel radius*/
+    robot_head = 0;/*!< robot current heading*/
+  robot_length = 8;/*!< robot current heading*/
+    targethead = 0;/*!< robot target heading*/
+robot_width = 4;
+     max_steer = 40;
 }
 
 double Ackermann::updateSteer(double steer_angle) {
-
-
-
-	double R = robot_length/ std::tan((M_PI/180)*steer_angle);
-
-        // if ( targetHeading > 0 ) {
-        //        dir = 1;
-        // } else {
-        //        dir = -1;
-        // }
-
+double R = robot_length/ std::tan((M_PI/180)*steer_angle);
 
 int dir = 1;
 //  To calculate the angles, follow this link
@@ -68,28 +56,20 @@ left_steer = (90 - (180/M_PI)*std::atan((R +
                (robot_length * 0.5))/ robot_width) * dir);
 right_steer = (90 - (180/M_PI)*std::atan((R -
                (robot_length * 0.5))/ robot_width) * dir);
-                if(std::max(left_steer, right_steer) > 45) {
-                        
-                        steer = max_steer;  
-                 }
-                else
-          	steer = steer_angle;
+                if (std::max(left_steer, right_steer) > 45) {
+                       steer = max_steer;
+                 } else {
+            steer = steer_angle;}
 
 
 
 
 return steer;
-
 }
 
 double Ackermann::updateHead(double time, double velocity,
 double steer , double currHead) {
-// double head = currHead + (velocity*time*(std::tan((M_PI/180)*steer)/robot_length));
-
-
-
-
-	currHead +=(velocity*time*(std::tan((M_PI/180)*steer)/robot_length));
+    currHead +=(velocity*time*(std::tan((M_PI/180)*steer)/robot_length));
 
 
 return currHead;
