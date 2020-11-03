@@ -47,34 +47,22 @@ using std::chrono::steady_clock;
 using std::chrono::duration;
 
 control::PIDController::PIDController() {
-  kp = 0.5;
-  ki = 0.1;
-  kd = 0.1;
+  kp = 0.4;
+  ki = 0.05;
+  kd = 0.001;
   prev_error = 0;
   sum_error = 0;
-  f = 10.0;
+  f = 100.0;
   current_error = 10000;
   max_velocity = 2;
+  // currentvel = 0;
+  currenthead = 0;
+  ack_steer = 0;
+  prev_headerror = 0;
+  current_headerror = 0;
+
 }
 
-
-
-// void control::PIDController::start() {
-//   // rejoin any existing thread
-//   stop(true);
-
-//   // spin off a thread processing our control loop
-//   std::thread([this](){this->controlLoop();});
-// }
-
-
-// void control::PIDController::stop(bool block) {
-//   // set cancel; optionally wait for the thread to return
-//   cancel_ = true;
-//   if (block && control_loop_handle_.joinable())
-//     control_loop_handle_.join();
-//   cancel_ = false;
-// }
 
 void control::PIDController::setKp_(double kp_) {
   kp = kp_;
@@ -100,64 +88,88 @@ double control::PIDController::calculateError(double desired_vel, double actual_
     current_error = desired_vel - actual_vel;
     double feedback;
     double differror;
-
-
     sum_error += current_error*(1/f);
     differror =  current_error - prev_error;
-
+       
 
      feedback = kp * current_error + kd * differror*f + ki * sum_error;
     prev_error = current_error;
+
+  
+
+  return feedback;
+}
+
+double control::PIDController::calculateheadError(double desired_head, double actual_head) {
+    current_headerror = desired_head - actual_head;
+    double feedback;
+    double differror;
+    sum_headerror += current_headerror*(1/f);
+    differror =  current_headerror - prev_headerror;
+
+     feedback = kp * current_error + kd * differror*f + ki * sum_error;
+    prev_headerror = current_headerror;
+
   return feedback;
 }
 
 
-double control::PIDController::convergeParams(double currentvel, double setvel,
-  double currenthead, double sethead) {
+double control::PIDController::convergeParams(double actvel, double setvel,
+  double acthead, double sethead) {
   // initialize timing variables
 int i = 1;
   std::chrono::milliseconds duration(static_cast<int>(1000/f));
   auto next_loop_time = steady_clock::now();
 Ackermann ack;
-double ack_steer = 0;
-int velocityConverged = 0;
+double currentvel = actvel;
+currenthead = acthead;
+     
+      double fbv = kp * (setvel-actvel);
+      prev_error = setvel - actvel;
 
-
-      double fbv = calculateError(currentvel, setvel);
-      std::cout << "fbv 1 is " << fbv <<std::endl;
 
       currentvel +=fbv;
-      double fbh = calculateError(currenthead, sethead);
-            std::cout << "fbh 1 is " << fbh <<std::endl;
+      double fbh = kp*(sethead-acthead);
+            std::cout << "head error init  is " << fbh <<std::endl;
+      prev_headerror = sethead - acthead;
 
       ack_steer +=fbh;
 
       ack_steer = ack.updateSteer(ack_steer);
-        if (setvel== currentvel) 
-                      velocityConverged = 1;
+                  std::cout << "steerangle init is " << ack_steer <<std::endl;
 
-  // execute loop at the desired frequency
-  while (abs(setvel-currentvel) > 0.1 || abs(sethead-currenthead) > 0.1) {
-    // update next target time
+         std::cout << "curr vel is " << currentvel <<std::endl;
+                  std::cout << "set vel is " << setvel <<std::endl;
+
+              std::cout << "curr head is " << currenthead <<std::endl;
+              std::cout << "set head is " << sethead <<std::endl;
+  while(abs(currenthead-sethead)<0.1) {
+
+             // std::cout << "inside lop " <<std::endl;
+
       next_loop_time += duration;
       currenthead = ack.updateHead(1/f, currentvel, ack_steer ,currenthead );
-       std::cout << "step count is " << i <<std::endl;
-           i++;
-             if(velocityConverged!=1) {
-                fbv = calculateError(currentvel, setvel);
+
+        std::cout << "currenthead is " << currenthead <<std::endl;
+        std::cout << "currentvel is " << currentvel <<std::endl;
+        std::cout << "step count is " << i <<std::endl;
+        i++;
+             if(abs(currentvel-setvel)<0.01) {
+                fbv = calculateError(setvel,currentvel);
+                  // std::cout << "fbv is " << fbv <<std::endl;
+
+
                 currentvel +=fbv;
-             if (setvel== currentvel) 
-                               velocityConverged = 1;
+
               }
-                      fbh = calculateError(currenthead, sethead);
+                      fbh = calculateError(sethead, currenthead);
                      ack_steer+=fbh;
                std::this_thread::sleep_until(next_loop_time);
-
-
+            //   std::cout << "head is " << currenthead <<std::endl;
+            // std::cout << "vel is " << currentvel <<std::endl;
           
         }
-            std::cout << "head is " << currenthead <<std::endl;
-            std::cout << "vel is " << currentvel <<std::endl;
+            
 
 
 

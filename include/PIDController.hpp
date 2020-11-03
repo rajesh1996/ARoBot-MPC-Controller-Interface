@@ -51,7 +51,7 @@
 namespace control {
 class PIDController {
  private:
-  double max_velocity = 0;/*!< Max vehicle velocity*/
+  double max_velocity = 2;/*!< Max vehicle velocity*/
   double max_accel = 0;/*!< Max vehicle acceleration*/
   double ang_vel = 0;/*!< Max vehicle angular velocity*/
   double ang_accel = 0;/*!< Max vehicle ngular acceleration*/
@@ -60,14 +60,20 @@ class PIDController {
   double kd = 0; /*!< Derivative coefficient*/
   double error = 0;/*!< keep track of current error*/
   double prev_error = 0;/*!< keep track of previous error*/
+  double prev_headerror = 0;/*!< keep track of previous error*/
   double sum_error = 0;/*!< keep track of cumulative error*/
+  double sum_headerror = 0;/*!< keep track of cumulative error*/
   double t_update = 0.01;/*!< step time interval*/
   std::vector<std::pair<double, double>>\
 velpoints;/*!< stores velocity wrt time*/
   std::vector<std::pair<double, double>> headpoints;/*!< stores head wrt time*/
   double f = 100.0;/*!< controller frequency*/
   double current_error =100;/*!< current error*/
+  double current_headerror = 100;
 
+  // double  currentvel = 0;
+   double currenthead = 0;
+  double ack_steer = 0;
 
  public:
   /**
@@ -177,6 +183,11 @@ velpoints;/*!< stores velocity wrt time*/
 
 
   double plotHeading();
+
+
+
+
+  double calculateheadError(double desired_head, double actual_head);
 
 
 
