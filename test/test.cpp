@@ -57,6 +57,10 @@ TEST(PIDCalculateTest, TEST_CALCULATE_ERROR) {
 EXPECT_DOUBLE_EQ(0.6005, controller.calculateError(0.0, 1.0));
 }
 
+TEST(PIDCalculateheadTest, TEST_CALCULATE_HEADERROR) {
+EXPECT_DOUBLE_EQ(-0.6005, controller.calculateheadError(1.0, 2.0));
+}
+
 TEST(PIDConvergeTest, TEST_CALCULATE_ERROR) {
 EXPECT_NEAR(1, controller.convergeParams(0, 2.0, 0, 2), 2);
 }
