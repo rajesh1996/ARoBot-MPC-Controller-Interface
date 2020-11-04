@@ -26,6 +26,10 @@ A controller interface for an Ackerman Kinematic model which continiuosly predic
 ```
 sudo apt-get install gnuplot
 ```
+3. boost
+```
+sudo apt-get install libboost-all-dev
+```
 
 ## Standard install via command-line
 ```
@@ -42,6 +46,38 @@ Run program: ./app/shell-app
 ## License
 This software has been lincesed under [BSD 3-Clause](https://github.com/rajesh1996/ARoBot-MPC-Controller-Interface/blob/master/LICENSE.md)
 
+
+To generate documentation:
+```
+doxywizard
+```
+## Demo
+Run the program. Once the velocity and heading converge to the target then graphs will be displayed as below. Also, converged values will be shown in the terminal.
+
+<p align="center">
+<h5> Heading Convergence</h5>
+<img src="/results/headingplot.png.png">
+</p>
+</br>
+<p align="center">
+<h5> Velocity Convergence</h5>
+<img src="/results/velocityplot.png">
+</p>
+</br>
+<p align="center">
+<h5> Terminal Output</h5>
+<img src="/results/terminalout.png">
+</p>
+
+## Bugs
+None
+
+## References
+* Ackermann Steering- http://correll.cs.colorado.edu/?p=1869
+* PID Controller- https://en.wikipedia.org/wiki/PID_controller
+* gnuplot- http://stahlke.org/dan/gnuplot-iostream/
+
+
 ## Building for code coverage
 ```
 sudo apt-get install lcov
@@ -50,7 +86,6 @@ make
 make code_coverage
 ```
 This generates a index.html page in the build/coverage sub-directory that can be viewed locally in a web browser.
-
 
 ## Run cppcheck
 
