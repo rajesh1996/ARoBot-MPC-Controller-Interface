@@ -56,13 +56,10 @@ left_steer = (90 - (180/M_PI)*std::atan((R +
                (robot_length * 0.5))/ robot_width) * dir);
 right_steer = (90 - (180/M_PI)*std::atan((R -
                (robot_length * 0.5))/ robot_width) * dir);
-                if (std::max(left_steer, right_steer) > 45) {
+                if (std::max(left_steer, right_steer) > 0.78) {
                        steer = max_steer;
                  } else {
             steer = steer_angle;}
-
-
-
 
 return steer;
 }

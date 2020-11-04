@@ -32,17 +32,17 @@
  * @authors Rajeshwar N S Arjun Srinivasan
  */
 
-#include "../include/PIDController.hpp"
 
-#include "../include/Ackermann.hpp"
 #include <cmath>
-#include "gnuplot-iostream.h"
 #include<chrono>
 #include<thread>
 
-using namespace std::chrono_literals;
-using std::chrono::steady_clock;
-using std::chrono::duration;
+#include "../include/PIDController.hpp"
+#include "../include/Ackermann.hpp"
+#include "../include/gnuplot-iostream.h"
+
+
+
 
 control::PIDController::PIDController() {
   kp = 0.5;
@@ -52,12 +52,11 @@ control::PIDController::PIDController() {
   sum_error = 0;
   f = 100.0;
   current_error = 10000;
-  max_velocity = 2;
-  // currentvel = 0;
   currenthead = 0;
   ack_steer = 0;
   prev_headerror = 0;
   current_headerror = 0;
+  sum_headerror = 0;
 }
 
 
@@ -87,21 +86,29 @@ double control::PIDController::calculateError(
     double feedback;
     double differror;
     sum_error += current_error*(1/f);
+        if (sum_error > desired_vel/2) {
+      sum_error = 0;
+    }
     differror =  current_error - prev_error;
-     feedback = kp * current_error + kd * differror*f + ki * sum_error;
+feedback = getKp() * current_error +
+     getKd() * differror*f + getKi() * sum_error;
     prev_error = current_error;
-  return feedback;
+  return -feedback;
 }
 
 double control::PIDController::calculateheadError(
   double desired_head, double actual_head) {
-    current_headerror = desired_head - actual_head*(M_PI/180);
+    current_headerror = desired_head - actual_head;
     double feedback;
     double differror;
     sum_headerror += current_headerror*(1/f);
+    if (sum_headerror > desired_head/2) {
+      sum_headerror = 0;
+    }
     differror =  current_headerror - prev_headerror;
 
-     feedback = kp * current_error + kd * differror*f + ki * sum_error;
+feedback = getKp() * current_error + getKd() *
+differror*f + getKi()* sum_headerror;
     prev_headerror = current_headerror;
 
   return feedback;
@@ -110,62 +117,48 @@ double control::PIDController::calculateheadError(
 double control::PIDController::convergeParams(double actvel, double setvel,
   double acthead, double sethead) {
   // initialize timing variables
+
+  acthead = acthead*(M_PI/180);
+    sethead = sethead*(M_PI/180);
+
+
 int i = 1;
   std::chrono::milliseconds duration(static_cast<int>(1000/f));
-  auto next_loop_time = steady_clock::now();
+  auto next_loop_time = std::chrono::steady_clock::now();
 Ackermann ack;
 double currentvel = actvel;
 currenthead = acthead;
-
       double fbv = kp * (setvel-actvel);
       prev_error = setvel - actvel;
-
-
       currentvel +=fbv;
       double fbh = kp*(sethead-acthead);
-            std::cout << "head error init  is " << fbh <<std::endl;
       prev_headerror = sethead -acthead;
-
       ack_steer +=fbh;
-
       ack_steer = ack.updateSteer(ack_steer);
-                  std::cout << "steerangle init is " << ack_steer <<std::endl;
-
-         std::cout << "curr vel is " << currentvel <<std::endl;
-                  std::cout << "set vel is " << setvel <<std::endl;
      velpoints.push_back(std::make_pair(i/f, currentvel));
+     headpoints.push_back(std::make_pair(i/f, (180/M_PI)*currenthead));
+std::cout << "head(deg): " << (180/M_PI)*currenthead <<" vel(m/s): "
+<< currentvel
+<<" timestep " << i <<std::endl;
 
-
-
-                  // points.push_back(std::make_pair(
-                  //                 (1/f, heading));
-
-              std::cout << "curr head is " << currenthead <<std::endl;
-              std::cout << "set head is " << sethead <<std::endl;
-                            std::cout << "sabsis " << fabs(currenthead-sethead) <<std::endl;
-
-while(abs(currenthead-sethead) > 0.1) {
-  // while(i<30) {
-             // std::cout << "inside lop " <<std::endl;
-
+while(std::abs(currenthead-sethead) > 0.001) {
       next_loop_time += duration;
       currenthead = ack.updateHead(1/f, currentvel, ack_steer , currenthead);
-
-        std::cout << "currenthead is " << currenthead <<std::endl;
-        std::cout << "currentvel is " << currentvel <<std::endl;
-        std::cout << "step count is " << i <<std::endl;
         i++;
-             if (abs(currentvel-setvel) > 0.1) {
-                fbv = calculateError(setvel, currentvel);
+             if (std::abs(currentvel-setvel) > 0.001) {
+                fbv = -calculateError(setvel, currentvel);
                 currentvel +=fbv;
+                velpoints.push_back(std::make_pair(i/f, currentvel));
               }
-                      fbh = calculateError(sethead, currenthead);
+                      fbh = -calculateheadError(sethead, currenthead);
                      ack_steer+=fbh;
-               std::this_thread::sleep_until(next_loop_time);
-     velpoints.push_back(std::make_pair(i/f, currentvel));}
-                         std::cout << "splos "  <<std::endl;
+                           ack_steer = ack.updateSteer(ack_steer);
 
-                  // plotVelocity();
+               std::this_thread::sleep_until(next_loop_time);
+std::cout << "head(deg): " << (180/M_PI)*currenthead <<" vel(m/s): "
+<< currentvel <<" timestep " << i <<std::endl;
+          headpoints.push_back(std::make_pair(i/f, (180/M_PI)*currenthead));}
+
 
             return currenthead;
 }
@@ -173,43 +166,47 @@ while(abs(currenthead-sethead) > 0.1) {
 
 
 
+
+double control::PIDController::plotVelocity(bool flag = true) {
+//  call object and intialise variables for Graph in GNUPLOT
+Gnuplot gnup1;
+//  set the graph on gnuplot for the respective coordinates
+gnup1 << "set xrange [0:0.2]\nset yrange [0:2.5]\n";
+gnup1 << "set title \"Velocity Convergence\"\n";
+gnup1 << "set pointsize 1\n";
+gnup1 << "set xlabel \"Time\"\n";
+gnup1 << "set ylabel \"Current Velocity\"\n";
+gnup1 << "set key outside\n";
+gnup1 << "plot" << gnup1.file1d(velpoints)
+     << "with lp title 'Current Velocity' lc 3, "
+     << 2 << " title 'Set Point' lt 1 lc 4" << std::endl;
+     if (flag)
+       return 1;
+     else
+      return 2;
+}
+
+
+double control::PIDController::plotHeading(bool flag = true) {
+//  call object and intialise variables for Graph in GNUPLOT
+  Gnuplot gnup;
+
+//  set the graph on gnuplot for the respective coordinates
+gnup << "set xrange [0:3]\nset yrange [0:30]\n";
+gnup << "set title \"Heading Convergence\"\n";
+gnup << "set pointsize 1\n";
+gnup << "set xlabel \"Time\"\n";
+gnup << "set ylabel \"Current Heading\"\n";
+gnup << "set key outside\n";
+gnup << "plot" << gnup.file1d(headpoints)
+     << "with lp title 'Current Heading' lc 3, "
+     << 25 << " title 'Set Point' lt 1 lc 4" << std::endl;
+     if (flag)
+       return 1;
+     else
+      return 2;
+}
+
+
 control::PIDController::~PIDController() {
 }
-
-
-double control::PIDController::plotVelocity() {
-//  call object and intialise variables for Graph in GNUPLOT
-Gnuplot gnup;
-//  set the graph on gnuplot for the respective coordinates
-gnup << "set xrange [0:0.03]\nset yrange [0:45]\n";
-gnup << "set title \"Velocity Convergence\"\n";
-gnup << "set pointsize 1\n";
-gnup << "set xlabel \"Time\"\n";
-gnup << "set ylabel \"Current Velocity\"\n";
-gnup << "set key outside\n";
-
-gnup << "plot" << gnup.file1d(velpoints)
-     << "with lp title 'Current Velocity' lc 3, "
-     << 1 << " title 'Set Point' lt 1 lc 4" << std::endl;
-     return 10.1;
-}
-
-
-double control::PIDController::plotHeading() {
-//  call object and intialise variables for Graph in GNUPLOT
-Gnuplot gnup;
-//  set the graph on gnuplot for the respective coordinates
-gnup << "set xrange [0:0.03]\nset yrange [0:45]\n";
-gnup << "set title \"Velocity Convergence\"\n";
-gnup << "set pointsize 1\n";
-gnup << "set xlabel \"Time\"\n";
-gnup << "set ylabel \"Current Velocity\"\n";
-gnup << "set key outside\n";
-
-gnup << "plot" << gnup.file1d(velpoints)
-     << "with lp title 'Current Velocity' lc 3, "
-     << 1 << " title 'Set Point' lt 1 lc 4" << std::endl;
-     return 10.1;
-}
-
-
