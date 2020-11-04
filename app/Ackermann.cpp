@@ -32,19 +32,43 @@
  * @authors Rajeshwar N S Arjun Srinivasan
  */
 #include<iostream>
+#include <cmath>
  #include "../include/Ackermann.hpp"
-
 Ackermann::Ackermann() {
+left_steer = 0;/*!< leftwheel steering angle*/
+right_steer = 0;/*!< rightwheel steering angle*/
+steer = 10;
+  robot_length = 8;/*!< robot current heading*/
+robot_width = 4;
+     max_steer = 40;
 }
 
-double Ackermann::updateSteer(double steer) {
-  return 30;
+double Ackermann::updateSteer(double steer_angle) {
+double R = robot_length/ std::tan((M_PI/180)*steer_angle);
+
+int dir = 1;
+left_steer = (90 - (180/M_PI)*std::atan((R +
+               (robot_length * 0.5))/ robot_width) * dir);
+right_steer = (90 - (180/M_PI)*std::atan((R -
+               (robot_length * 0.5))/ robot_width) * dir);
+                if (std::max(left_steer, right_steer) > 0.78) {
+                       steer = max_steer;
+                 } else {
+            steer = steer_angle;}
+
+return steer;
 }
 
 double Ackermann::updateHead(double time, double velocity,
 double steer , double currHead) {
-return 1;
+    currHead +=(velocity*time*(std::tan((M_PI/180)*steer)/robot_length));
+
+
+return currHead;
 }
 
+
 Ackermann::~Ackermann() {}
+
+
 

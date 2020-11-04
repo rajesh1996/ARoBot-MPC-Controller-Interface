@@ -39,10 +39,17 @@
 
 control::PIDController controller;
 
+
+/**
+ *  @def (PIDTest, TEST_GET_SET_PID) 
+ *  @brief Test to check that values of
+ *  kp,ki and kd are set properly
+ */
+
 TEST(PIDTest, TEST_GET_SET_PID) {
   double kp = 0.5;
-  double ki = 0.1;
-  double kd = 0.2;
+  double ki = 0.05;
+  double kd = 0.001;
 
   controller.setKp_(kp);
   controller.setKi_(ki);
@@ -52,11 +59,41 @@ TEST(PIDTest, TEST_GET_SET_PID) {
   EXPECT_DOUBLE_EQ(ki, controller.getKi());
   EXPECT_DOUBLE_EQ(kd, controller.getKd());
 }
-
+/**
+ *  @def TEST(PIDCalculateheadTest, TEST_CALCULATE_ERROR) 
+ *  @brief Test to check if calculate vel error is working
+ */
 TEST(PIDCalculateTest, TEST_CALCULATE_ERROR) {
-EXPECT_DOUBLE_EQ(20.501, controller.calculateError(0.0, 1.0));
+EXPECT_DOUBLE_EQ(0.6005, controller.calculateError(0.0, 1.0));
+}
+/**
+ *  @def TEST(PIDCalculateheadTest, TEST_CALCULATE_HEADERROR) 
+ *  @brief Test to check if calculate head error is working
+ */
+TEST(PIDCalculateheadTest, TEST_CALCULATE_HEADERROR) {
+EXPECT_DOUBLE_EQ(-0.6005, controller.calculateheadError(1.0, 2.0));
 }
 
-TEST(PIDConvergeTest, TEST_CALCULATE_ERROR) {
-EXPECT_NEAR(45, controller.convergeParams(0, 1.0, 0, 45), 0.1);
+/**
+ *  @def TEST(PIDConvergeTest, TEST_CALCULATE_CONVERGENCE)
+ *  @brief Test to check if calculate convergence is working
+ */
+
+TEST(PIDConvergeTest, TEST_CALCULATE_CONVERGENCE) {
+EXPECT_NEAR(1, controller.convergeParams(0, 2.0, 0, 2), 2);}
+
+/**
+ *  @def TEST(PIDplotheadTest, TEST_CALCULATE_HEADPLOT)
+ *  @brief Test to check if headingGraph is working
+ */
+TEST(PIDplotheadTest, TEST_CALCULATE_HEADPLOT) {
+ASSERT_EQ(2, controller.plotHeading(false));}
+/**
+ *  @def TEST(PIDplotvelTest, TEST_CALCULATE_VELPLOT)
+ *  @brief Test to check if VelocityGraph is working
+ */
+
+TEST(PIDplotvelTest, TEST_CALCULATE_VELPLOT) {
+ASSERT_EQ(2, controller.plotVelocity(false));
 }
+

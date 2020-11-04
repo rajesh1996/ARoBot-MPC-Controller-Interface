@@ -38,5 +38,12 @@
 
 
 int main() {
+control::PIDController acker;
+acker.setKp_(0.5);
+acker.setKi_(0.05);
+acker.setKd_(0.001);
+acker.convergeParams(0, 2, 0, 25);
+acker.plotVelocity(true);
+acker.plotHeading(true);
     return 0;
 }

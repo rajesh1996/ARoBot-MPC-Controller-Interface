@@ -43,10 +43,15 @@ class Ackermann {
 
     double left_steer = 0;/*!< leftwheel steering angle*/
     double right_steer = 0;/*!< rightwheel steering angle*/
+    double steer = 0;/*!<  steering angle*/
     double wheel_radius = 0;/*!< wheel radius*/
     double robot_head = 0;/*!< robot current heading*/
-    double robot_length = 0;/*!< robot current heading*/
+    double robot_length = 8;/*!< robot current heading*/
     double targethead = 0;/*!< robot target heading*/
+        double robot_width = 4;
+double max_steer = 40;/*!< max steer angle*/
+
+
 
  public :
 

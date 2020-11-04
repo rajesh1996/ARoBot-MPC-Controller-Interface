@@ -1,6 +1,6 @@
 ## ARoBot - A PID controller Interface module for Ackerman Steering based Autonmous Robots
 [![Build Status](https://travis-ci.org/rajesh1996/ARoBot-PID-Controller-Interface.svg?branch=master)](https://travis-ci.org/rajesh1996/ARoBot-PID-Controller-Interface)
-[![Coverage Status](https://coveralls.io/repos/github/rajesh1996/ARoBot-MPC-Controller-Interface/badge.svg?branch=master)](https://coveralls.io/github/rajesh1996/ARoBot-MPC-Controller-Interface?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/rajesh1996/ARoBot-PID-Controller-Interface/badge.svg?branch=master)](https://coveralls.io/github/rajesh1996/ARoBot-PID-Controller-Interface?branch=master)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 ---
 
@@ -9,7 +9,7 @@
 * Arjun Srinivasan Ambalam - Sprint 1 (Navigator) Sprint 2 (Driver)
 
 ## Overview
-A controller interface for an Ackerman Kinematic model which continiuosly predicts the steering angle and wheel velocities
+A controller interface for an Ackerman Kinematic model which continiuosly predicts the steering angle and wheel velocities for a four wheeled robot which is navigating through an area. The controller implemeted is a PID controller which ensures the velocites and the heading are set to some target values which helps the robot steer properly in its environment. The controller calculates the error usinf propertional, derivative and integral gains and calculate the arc length and the angles given by the Ackerman geomtery model.A graph is plotted in the end indicating the convergence.
 
 ## Agile Iterative Process Log sheet
 
@@ -26,6 +26,10 @@ A controller interface for an Ackerman Kinematic model which continiuosly predic
 ```
 sudo apt-get install gnuplot
 ```
+3. boost
+```
+sudo apt-get install libboost-all-dev
+```
 
 ## Standard install via command-line
 ```
@@ -41,6 +45,40 @@ Run program: ./app/shell-app
 
 ## License
 This software has been lincesed under [BSD 3-Clause](https://github.com/rajesh1996/ARoBot-MPC-Controller-Interface/blob/master/LICENSE.md)
+
+
+To generate documentation:
+```
+doxywizard
+```
+## Demo
+Run the program. Once the velocity and heading converge to the target then graphs will be displayed as below. Also, converged values will be shown in the terminal.
+
+<p align="center">
+<h5> Heading Convergence</h5>
+<img src="/results/headingplot.png">
+</p>
+
+</br>
+<p align="center">
+<h5> Velocity Convergence</h5>
+<img src="/results/velocityplot.png">
+</p>
+
+</br>
+<p align="center">
+<h5> Terminal Output</h5>
+<img src="/results/terminalout.png">
+</p>
+
+## Bugs
+None
+
+## References
+* Ackermann Steering- http://correll.cs.colorado.edu/?p=1869
+* PID Controller- https://en.wikipedia.org/wiki/PID_controller
+* gnuplot- http://stahlke.org/dan/gnuplot-iostream/
+
 
 ## Building for code coverage
 ```
