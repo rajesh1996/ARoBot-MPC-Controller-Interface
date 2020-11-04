@@ -34,11 +34,17 @@
 
 Ackermann ack;
 
-
+/**
+ *  @def TEST(AckermannTest, TEST_STEERING)
+ *  @brief Test to check if updatesteer is working
+ */
 TEST(AckermannTest, TEST_STEERING) {
 EXPECT_LT(ack.updateSteer(40), 45);
 }
-
+/**
+ *  @def TEST(AckermannTest, TEST_HEAD)
+ *  @brief Test to check if update is working
+ */
 
 TEST(AckermannTest, TEST_HEAD) {
 EXPECT_GT(ack.updateHead(1, 1, 45, 0), 0);

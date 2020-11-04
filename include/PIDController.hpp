@@ -64,11 +64,9 @@ velpoints;/*!< stores velocity wrt time*/
   std::vector<std::pair<double, double>> headpoints;/*!< stores head wrt time*/
   double f = 100.0;/*!< controller frequency*/
   double current_error = 100;/*!< current error*/
-  double current_headerror = 100;
-
-  // double  currentvel = 0;
-  double currenthead = 0;
-  double ack_steer = 0;
+  double current_headerror = 100;/*!< current headerror*/
+  double currenthead = 0;/*!< current head*/
+  double ack_steer = 0;/*!< current steer*/
 
  public:
   /**
@@ -162,24 +160,17 @@ velpoints;/*!< stores velocity wrt time*/
 
   /**
    *  @brief Function to use GNUplot for velocity convergence graph
-   *  @return none
+   *  @param bool flag
+   *  @return double
    */
   double plotVelocity(bool a);
   /**
    *  @brief Function to use GNUplot for Heading convergence graph
-   *  @return none
+   *  @param bool flag
+   *  @return double
    */
 
-  // void start();
-  // void stop(bool block = false);
-
-
-  // void controlLoop();
-
-
   double plotHeading(bool a);
-
-
 
 
   double calculateheadError(double desired_head, double actual_head);

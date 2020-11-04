@@ -38,10 +38,7 @@ Ackermann::Ackermann() {
 left_steer = 0;/*!< leftwheel steering angle*/
 right_steer = 0;/*!< rightwheel steering angle*/
 steer = 10;
-    wheel_radius = 0;/*!< wheel radius*/
-    robot_head = 0;/*!< robot current heading*/
   robot_length = 8;/*!< robot current heading*/
-    targethead = 0;/*!< robot target heading*/
 robot_width = 4;
      max_steer = 40;
 }
@@ -50,8 +47,6 @@ double Ackermann::updateSteer(double steer_angle) {
 double R = robot_length/ std::tan((M_PI/180)*steer_angle);
 
 int dir = 1;
-//  To calculate the angles, follow this link
-//  https://www.sciencedirect.com/topics/engineering/ackermann
 left_steer = (90 - (180/M_PI)*std::atan((R +
                (robot_length * 0.5))/ robot_width) * dir);
 right_steer = (90 - (180/M_PI)*std::atan((R -
