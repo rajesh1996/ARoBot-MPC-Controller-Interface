@@ -41,8 +41,8 @@ control::PIDController controller;
 
 TEST(PIDTest, TEST_GET_SET_PID) {
   double kp = 0.5;
-  double ki = 0.1;
-  double kd = 0.2;
+  double ki = 0.05;
+  double kd = 0.001;
 
   controller.setKp_(kp);
   controller.setKi_(ki);
@@ -54,9 +54,9 @@ TEST(PIDTest, TEST_GET_SET_PID) {
 }
 
 TEST(PIDCalculateTest, TEST_CALCULATE_ERROR) {
-EXPECT_DOUBLE_EQ(20.501, controller.calculateError(0.0, 1.0));
+EXPECT_DOUBLE_EQ(0.6005, controller.calculateError(0.0, 1.0));
 }
 
 TEST(PIDConvergeTest, TEST_CALCULATE_ERROR) {
-EXPECT_NEAR(1, controller.convergeParams(0, 1.0, 0, 1), 0.1);
+EXPECT_NEAR(1, controller.convergeParams(0, 2.0, 0, 2), 2);
 }
