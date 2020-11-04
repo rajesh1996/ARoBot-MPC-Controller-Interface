@@ -19,7 +19,7 @@ if (COVERAGE)
     include(CodeCoverage)
     set(LCOV_REMOVE_EXTRA "'vendor/*'")
     setup_target_for_coverage(code_coverage test/cpp-test coverage)
-    set(COVERAGE_SRCS app/main.cpp include/lib.hpp)
+    set(COVERAGE_SRCS app/main.cpp app/PIDController.cpp app/Ackermann.cpp include/Ackermann.hpp include/PIDController.hpp)
 
     SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
     SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
@@ -27,6 +27,7 @@ if (COVERAGE)
 else()
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -g")
 endif()
+
 
 include(CMakeToolsHelpers OPTIONAL)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
