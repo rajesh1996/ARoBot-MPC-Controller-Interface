@@ -56,13 +56,15 @@ Run the program. Once the velocity and heading converge to the target then graph
 
 <p align="center">
 <h5> Heading Convergence</h5>
-<img src="/results/headingplot.png.png">
+<img src="/results/headingplot.png">
 </p>
+
 </br>
 <p align="center">
 <h5> Velocity Convergence</h5>
 <img src="/results/velocityplot.png">
 </p>
+
 </br>
 <p align="center">
 <h5> Terminal Output</h5>
